@@ -1,0 +1,9 @@
+# Default model configuration
+type: random_forest
+save_model: true
+cross_validation:
+  enabled: true
+  n_folds: 5
+  metrics:
+    - accuracy
+    - f1

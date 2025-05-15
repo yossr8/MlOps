@@ -1,0 +1,22 @@
+# Feature configuration
+numeric_features:
+  - Age
+  - SibSp
+  - Parch
+  - Fare
+
+categorical_features:
+  - Pclass
+  - Sex
+  - Embarked
+  
+transformers:
+  numeric:
+    imputer:
+      strategy: median
+  
+  categorical:
+    imputer:
+      strategy: most_frequent
+    encoder:
+      handle_unknown: ignore

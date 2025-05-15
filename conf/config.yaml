@@ -1,0 +1,31 @@
+defaults:
+  - data: default
+  - model: random_forest
+  - features: default
+  - _self_
+
+# Paths
+paths:
+  train_data: C:\Users\yossr\Documents\MlOps proj\data\raw\train.csv
+  test_data: C:\Users\yossr\Documents\MlOps proj\data\raw\test.csv
+  output_dir: models
+
+# Logging configuration
+logging:
+  dir: logs
+  name: titanic_classifier
+
+# Visualization settings
+visualization:
+  enabled: true
+  save_dir: ${paths.output_dir}/visualizations
+
+# Hydra configuration
+hydra:
+  run:
+    dir: outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  sweep:
+    dir: multirun/${now:%Y-%m-%d}/${now:%H-%M-%S}
+    subdir: ${hydra.job.num}
+  job:
+    chdir: true

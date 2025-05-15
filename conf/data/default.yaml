@@ -1,0 +1,18 @@
+raw_data:
+  train_filename: train.csv
+  test_filename: test.csv
+
+preprocessing:
+  drop_columns:
+    - Name
+    - Ticket
+    - Cabin
+    - PassengerId  # Only dropped for training data
+
+  imputation:
+    age:
+      strategy: median
+    embarked:
+      strategy: most_frequent
+    fare:
+      strategy: median
