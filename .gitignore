@@ -13,7 +13,8 @@ logs/
 outputs/
 multirun/
 models/*.pkl
-data/raw/*
+data/*
+!data/**/*.dvc
 data/processed/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
