@@ -1,11 +1,11 @@
 stages:
   train:
-    cmd: python train.py
+    cmd: python -m src.scripts.train
     deps:
-      - train.py
+      - src/scripts/train.py
       - src/
-      - C:\Users\yossr\Documents\MlOps proj\data\raw\train.csv
-      - C:\Users\yossr\Documents\MlOps proj\data\raw\test.csv
+      - data/raw/train.csv
+      - data/raw/test.csv
     params:
       - model
       - paths
