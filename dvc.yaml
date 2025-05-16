@@ -2,14 +2,8 @@ stages:
   train:
     cmd: python -m src.scripts.train
     deps:
-      - src/scripts/train.py
-      - src/
-      - data/raw/train.csv
-      - data/raw/test.csv
-    params:
-      - model
-      - paths
-      - features
-      - data
+    - data/raw/test.csv
+    - data/raw/train.csv
+    - src/scripts/train.py
     outs:
-      - models/model.pkl
+    - models/model.pkl
