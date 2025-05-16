@@ -1,0 +1,15 @@
+stages:
+  train:
+    cmd: python train.py
+    deps:
+      - train.py
+      - src/
+      - C:\Users\yossr\Documents\MlOps proj\data\raw\train.csv
+      - C:\Users\yossr\Documents\MlOps proj\data\raw\test.csv
+    params:
+      - model
+      - paths
+      - features
+      - data
+    outs:
+      - models/model.pkl
