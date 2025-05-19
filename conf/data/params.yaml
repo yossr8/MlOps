@@ -1,0 +1,11 @@
+raw:
+  path: data/raw/train.csv
+
+processed:
+  train_path: data/processed/train.csv
+  test_path: data/processed/test.csv
+
+target_column: Survived         # Change to your actual target column if different
+features_columns: null          # Use all columns except target by default
+test_size: 0.2
+random_state: 42

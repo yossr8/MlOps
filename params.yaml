@@ -1,5 +1,5 @@
 model:
-  type: random_forest
+  type: random_forest  # Options: random_forest, xgboost, etc.
   params:
     n_estimators: 100
     max_depth: null
@@ -11,8 +11,8 @@ model:
     class_weight: balanced
 
 paths:
-  train_data: C:\Users\yossr\Documents\MlOps proj\data\raw\train.csv
-  test_data: C:\Users\yossr\Documents\MlOps proj\data\raw\test.csv
+  train_data: data/raw/train.csv
+  test_data: data/raw/test.csv
   output_dir: models
 
 features:
@@ -38,3 +38,29 @@ data:
         strategy: most_frequent
       fare:
         strategy: median
+
+train:
+  random_state: 42
+  validation_split: 0.2
+  cv_folds: 5
+  scoring_metric: f1_weighted
+  n_jobs: -1
+
+grid_search:
+  random_forest:
+    n_estimators: [100, 200, 300]
+    max_depth: [10, 20, 30, null]
+    min_samples_split: [2, 5, 10]
+    min_samples_leaf: [1, 2, 4]
+  xgboost:
+    n_estimators: [100, 200, 300]
+    max_depth: [3, 5, 7, 9]
+    learning_rate: [0.01, 0.05, 0.1]
+    subsample: [0.8, 0.9, 1.0]
+    colsample_bytree: [0.8, 0.9, 1.0]
+
+mlflow:
+  tracking_uri: "http://localhost:5000"  # Change if using a remote server
+  experiment_name: "model_training"
+  register_model: true
+  artifact_location: "./mlruns"  # Default MLflow local folder
