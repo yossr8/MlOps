@@ -1,9 +1,36 @@
 stages:
-  train:
-    cmd: python -m src.scripts.train
+  preprocess:
+    cmd: python -m src.data.make_dataset
     deps:
-    - data/raw/test.csv
-    - data/raw/train.csv
-    - src/scripts/train.py
+      - src/data/make_dataset.py
+      - data/raw/train.csv
+      - data/raw/test.csv
     outs:
-    - models/model.pkl
+      - data/processed/train.csv
+      - data/processed/test.csv
+
+  train:
+    cmd: python -m src.models.train_with_MLflow
+    deps:
+      - src/models/train_with_MLflow.py
+      - data/processed/train.csv
+      - data/processed/test.csv
+      - params.yaml
+      - conf/model/mlflow.yaml
+    params:
+      - model.type
+      - model.params
+      - train.cv_folds
+      - train.scoring_metric
+      - features.numeric_features
+      - features.categorical_features
+      - data.preprocessing.drop_columns
+      - data.preprocessing.imputation
+      - mlflow.tracking_uri
+      - mlflow.experiment_name
+      - mlflow.artifact_location
+      - mlflow.register_model
+    outs:
+      - models/
+    metrics:
+      - metrics/metrics.json

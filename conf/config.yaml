@@ -1,13 +1,13 @@
 defaults:
-  - data: default
-  - model: random_forest
-  - features: default
   - _self_
+  - data: params
+  - model: params
+  - model: mlflow
 
-# Paths
+# Paths (relative, for cross-platform compatibility)
 paths:
-  train_data: C:\Users\yossr\Documents\MlOps proj\data\raw\train.csv
-  test_data: C:\Users\yossr\Documents\MlOps proj\data\raw\test.csv
+  train_data: data/raw/train.csv
+  test_data: data/raw/test.csv
   output_dir: models
 
 # Logging configuration
@@ -22,10 +22,20 @@ visualization:
 
 # Hydra configuration
 hydra:
+  job:
+    env_set:
+      PROJECT_ROOT: ${hydra:runtime.cwd}
+    chdir: true
+
   run:
     dir: outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}
+
   sweep:
     dir: multirun/${now:%Y-%m-%d}/${now:%H-%M-%S}
     subdir: ${hydra.job.num}
-  job:
-    chdir: true
+
+  # Uncomment below to use Hydra's built-in parameter sweeping
+  # sweeper:
+  #   params:
+  #     model.hyperparameters.random_forest.n_estimators: 100,200,300
+  #     model.hyperparameters.random_forest.max_depth: 10,20,30,null

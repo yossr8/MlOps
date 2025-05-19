@@ -1,7 +1,79 @@
 schema: '2.0'
 stages:
   train:
-    cmd: python -m src.scripts.train
+    cmd: python -m src.models.train_with_MLflow
+    deps:
+    - path: conf/model/mlflow.yaml
+      hash: md5
+      md5: 0df21a017fed10cf559bf9ae6d655570
+      size: 614
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 7e9ab22147aaabd94176f84f15306063
+      size: 29740
+    - path: data/processed/train.csv
+      hash: md5
+      md5: ea3004359afe13df72d2da1c231f5bb3
+      size: 63602
+    - path: params.yaml
+      hash: md5
+      md5: 41089db968b5ef6b5278ccdfe66c70e9
+      size: 1575
+    - path: src/models/train_with_MLflow.py
+      hash: md5
+      md5: 2e1550b11d3f033052daf06aac011d2a
+      size: 7447
+    params:
+      params.yaml:
+        data.preprocessing.drop_columns:
+        - Name
+        - Ticket
+        - Cabin
+        - PassengerId
+        data.preprocessing.imputation:
+          age:
+            strategy: median
+          embarked:
+            strategy: most_frequent
+          fare:
+            strategy: median
+        features.categorical_features:
+        - Pclass
+        - Sex
+        - Embarked
+        features.numeric_features:
+        - Age
+        - SibSp
+        - Parch
+        - Fare
+        mlflow.artifact_location: ./mlruns
+        mlflow.experiment_name: model_training
+        mlflow.register_model: true
+        mlflow.tracking_uri: http://localhost:5000
+        model.params:
+          n_estimators: 100
+          max_depth:
+          min_samples_split: 2
+          min_samples_leaf: 1
+          max_features: sqrt
+          bootstrap: true
+          random_state: 42
+          class_weight: balanced
+        model.type: random_forest
+        train.cv_folds: 5
+        train.scoring_metric: f1_weighted
+    outs:
+    - path: metrics/metrics.json
+      hash: md5
+      md5: 935bce8bcfcfbdda3e54391cd4e4ba37
+      size: 188
+    - path: models/
+      hash: md5
+      md5: 44070969f15f736d1d20cd0190fafd57.dir
+      size: 4759177
+      nfiles: 1
+  preprocess:
+    cmd: python -m src.data.make_dataset
     deps:
     - path: data/raw/test.csv
       hash: md5
@@ -11,67 +83,16 @@ stages:
       hash: md5
       md5: 2309cc5f04782ed9bb6016d9f4e381cf
       size: 61194
-    - path: src/
+    - path: src/data/make_dataset.py
       hash: md5
-      md5: 2535f70c8ea73a90b223eccb98ef828e.dir
-      size: 45056
-      nfiles: 14
-    - path: src/scripts/train.py
-      hash: md5
-      md5: 60886fb880385bd38e008992816badaf
-      size: 1558
-    params:
-      params.yaml:
-        data:
-          preprocessing:
-            drop_columns:
-            - Name
-            - Ticket
-            - Cabin
-            - PassengerId
-            imputation:
-              age:
-                strategy: median
-              embarked:
-                strategy: most_frequent
-              fare:
-                strategy: median
-        features:
-          numeric_features:
-          - Age
-          - SibSp
-          - Parch
-          - Fare
-          categorical_features:
-          - Pclass
-          - Sex
-          - Embarked
-          transformers:
-            numeric:
-              imputer:
-                strategy: median
-            categorical:
-              imputer:
-                strategy: most_frequent
-              encoder:
-                handle_unknown: ignore
-        model:
-          type: random_forest
-          params:
-            n_estimators: 100
-            max_depth:
-            min_samples_split: 2
-            min_samples_leaf: 1
-            max_features: sqrt
-            bootstrap: true
-            random_state: 42
-            class_weight: balanced
-        paths:
-          train_data: C:\Users\yossr\Documents\MlOps proj\data\raw\train.csv
-          test_data: C:\Users\yossr\Documents\MlOps proj\data\raw\test.csv
-          output_dir: models
+      md5: bf1db4b09acb5830640102003418c279
+      size: 2109
     outs:
-    - path: models/model.pkl
+    - path: data/processed/test.csv
       hash: md5
-      md5: 4ef1995c0a9664eab31e32f46af5fbe9
-      size: 3071993
+      md5: 7e9ab22147aaabd94176f84f15306063
+      size: 29740
+    - path: data/processed/train.csv
+      hash: md5
+      md5: ea3004359afe13df72d2da1c231f5bb3
+      size: 63602

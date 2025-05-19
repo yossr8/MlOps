@@ -1,0 +1,16 @@
+name: "ml_model"
+type: "random_forest"  # Options: random_forest, xgboost
+cv_folds: 5
+scoring_metric: "f1_weighted"
+n_jobs: -1
+
+# Base hyperparameters (will be overridden by grid search)
+hyperparameters:
+  n_estimators: 200
+  max_depth: 20
+  min_samples_split: 2
+  min_samples_leaf: 1
+  # The following are only used if type: xgboost
+  learning_rate: 0.1
+  subsample: 0.9
+  colsample_bytree: 0.9

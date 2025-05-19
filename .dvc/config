@@ -1,0 +1,4 @@
+[core]
+    remote = yossr8
+['remote "yossr8"']
+    url = https://dagshub.com/yossr8/MlOps
